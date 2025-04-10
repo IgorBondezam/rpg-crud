@@ -1,8 +1,8 @@
 package com.unicesumar.igor.rpg.controller;
 
 
-import com.unicesumar.igor.rpg.domain.Personagem;
-import com.unicesumar.igor.rpg.service.PersonagemService;
+import com.unicesumar.igor.rpg.domain.ItemMagico;
+import com.unicesumar.igor.rpg.service.ItemMagicoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("personagem")
 @AllArgsConstructor
-public class PersonagemController {
+public class ItemMagicoController {
 
-    private final PersonagemService service;
+    private final ItemMagicoService service;
 
     @GetMapping()
     public ResponseEntity findAll() {
@@ -37,7 +37,7 @@ public class PersonagemController {
     }
 
     @PostMapping()
-    public ResponseEntity save(@RequestBody Personagem personagem) {
+    public ResponseEntity save(@RequestBody ItemMagico personagem) {
         try {
             return ResponseEntity.ok(service.save(personagem));
         } catch (IllegalArgumentException e) {
@@ -48,7 +48,7 @@ public class PersonagemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Personagem personagem) {
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody ItemMagico personagem) {
         try {
             return ResponseEntity.ok(service.updateById(id, personagem));
         } catch (IllegalArgumentException e) {

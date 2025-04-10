@@ -1,10 +1,7 @@
 package com.unicesumar.igor.rpg.domain;
 
 import com.unicesumar.igor.rpg.domain.enums.Classe;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -22,7 +19,9 @@ public class Personagem {
     private String nomeAventureiro;
     private Classe classe;
     private Integer level;
-    private List<ItemMagico> itensMagicos = new ArrayList<>();
     private Integer força = 0;
     private Integer defesa = 0;
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<ItemMagico> itensMagicos = new ArrayList<>();
 }
