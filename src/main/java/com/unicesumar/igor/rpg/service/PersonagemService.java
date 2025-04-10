@@ -33,7 +33,7 @@ public class PersonagemService {
         personagem.setNomeAventureiro(personagemReq.getNomeAventureiro());
         personagem.setClasse(personagemReq.getClasse());
         personagem.setLevel(personagemReq.getLevel());
-        personagem.setForça(personagemReq.getForça());
+        personagem.setForca(personagemReq.getForca());
         personagem.setDefesa(personagemReq.getDefesa());
 
         personagem.getItensMagicos().clear();

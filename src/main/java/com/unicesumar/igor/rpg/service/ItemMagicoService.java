@@ -31,7 +31,7 @@ public class ItemMagicoService {
 
         itemMagico.setNome(itemMagicoReq.getNome());
         itemMagico.setTipoItem(itemMagicoReq.getTipoItem());
-        itemMagico.setForça(itemMagicoReq.getForça());
+        itemMagico.setForca(itemMagicoReq.getForca());
         itemMagico.setDefesa(itemMagicoReq.getDefesa());
 
         return repository.save(itemMagico);

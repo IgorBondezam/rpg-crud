@@ -1,27 +1,22 @@
-package com.unicesumar.igor.rpg.domain;
+package com.unicesumar.igor.rpg.dto;
 
 import com.unicesumar.igor.rpg.domain.enums.TipoItem;
-import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
-@Entity
-@Data
+@Component
 @Builder
-public class ItemMagico {
+@Data
+public class ItemMagicoDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nome;
-
-    @Enumerated(EnumType.STRING)
     private TipoItem tipoItem;
     @Builder.Default
     private Integer forca = 0;
     @Builder.Default
     private Integer defesa = 0;
-
 
 }
