@@ -1,10 +1,12 @@
 package com.unicesumar.igor.rpg.service;
 
 import com.unicesumar.igor.rpg.domain.ItemMagico;
+import com.unicesumar.igor.rpg.domain.enums.TipoItem;
 import com.unicesumar.igor.rpg.repository.ItemMagicoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 @Service
@@ -19,10 +21,26 @@ public class ItemMagicoService {
 
     public ItemMagico findById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Item Mágico não encontrado para o Id solicitado"));
+                .orElseThrow(() -> new InvalidParameterException("Item Mágico não encontrado para o Id solicitado"));
+    }
+
+    public List<ItemMagico> findByPersonagemId(Long personagemId) {
+        return repository.findItemMagicoByPersonagemId(personagemId);
     }
 
     public ItemMagico save(ItemMagico itemMagico) {
+        if(TipoItem.ARMA.equals(itemMagico.getTipoItem())) {
+            itemMagico.setDefesa(0);
+        }
+        if(TipoItem.ARMADURA.equals(itemMagico.getTipoItem())) {
+            itemMagico.setForca(0);
+        }
+        if(itemMagico.getForca() + itemMagico.getDefesa() == 0) {
+            throw new InvalidParameterException("A quantidade mínima de pontos não foi utilizada");
+        }
+        if(itemMagico.getForca() + itemMagico.getDefesa() > 10) {
+            throw new InvalidParameterException("A quantidade máxima de pontos foi ultrapassada");
+        }
         return repository.save(itemMagico);
     }
 

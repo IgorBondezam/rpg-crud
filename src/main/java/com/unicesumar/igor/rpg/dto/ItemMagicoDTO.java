@@ -1,6 +1,7 @@
 package com.unicesumar.igor.rpg.dto;
 
 import com.unicesumar.igor.rpg.domain.enums.TipoItem;
+import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -18,5 +19,4 @@ public class ItemMagicoDTO {
     private Integer forca = 0;
     @Builder.Default
     private Integer defesa = 0;
-
 }

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
+
 @RestController
 @RequestMapping("personagem")
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class PersonagemController {
     public ResponseEntity findAll() {
         try {
             return ResponseEntity.ok(service.findAll());
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -29,7 +31,7 @@ public class PersonagemController {
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.ok(service.findById(id));
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -40,7 +42,42 @@ public class PersonagemController {
     public ResponseEntity save(@RequestBody Personagem personagem) {
         try {
             return ResponseEntity.ok(service.save(personagem));
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @PatchMapping("/{id}/nome-aventureiro/{nomeAventureiro}")
+    public ResponseEntity update(@PathVariable("id") Long id, @PathVariable("nomeAventureiro") String nomeAventureiro) {
+        try {
+            return ResponseEntity.ok(service.updateNomeAventureiroId(id, nomeAventureiro));
+        } catch (InvalidParameterException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @PatchMapping("/{id}/adicionar-item/{itemMagicoId}")
+    public ResponseEntity adicionarItemMagicoById(@PathVariable("id") Long id, @PathVariable("itemMagicoId") Long itemMagicoId) {
+        try {
+            service.adicionarItemMagico(id, itemMagicoId);
+            return ResponseEntity.ok().build();
+        } catch (InvalidParameterException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @PatchMapping("/{id}/remover-item/{itemMagicoId}")
+    public ResponseEntity removerItemMagicoById(@PathVariable("id") Long id, @PathVariable("itemMagicoId") Long itemMagicoId) {
+        try {
+            service.removerItemMagico(id, itemMagicoId);
+            return ResponseEntity.ok().build();
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -51,19 +88,19 @@ public class PersonagemController {
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Personagem personagem) {
         try {
             return ResponseEntity.ok(service.updateById(id, personagem));
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
         }
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteById(@PathVariable("id") Long id) {
         try {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();

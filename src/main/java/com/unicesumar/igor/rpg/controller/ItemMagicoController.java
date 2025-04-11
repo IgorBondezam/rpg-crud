@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
+
 @RestController
 @RequestMapping("personagem")
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class ItemMagicoController {
     public ResponseEntity findAll() {
         try {
             return ResponseEntity.ok(service.findAll());
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -29,7 +31,29 @@ public class ItemMagicoController {
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
             return ResponseEntity.ok(service.findById(id));
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/personagem/{idPersonagem}")
+    public ResponseEntity findByPersonagemId(@PathVariable("idPersonagem") Long idPersonagem) {
+        try {
+            return ResponseEntity.ok(service.findByPersonagemId(idPersonagem));
+        } catch (InvalidParameterException e) {
+            return ResponseEntity.status(400).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    @GetMapping("/amuleto/personagem/{idPersonagem}")
+    public ResponseEntity findAmuteloByPersonagemId(@PathVariable("idPersonagem") Long idPersonagem) {
+        try {
+            return ResponseEntity.ok(service.findByPersonagemId(idPersonagem));
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -40,7 +64,7 @@ public class ItemMagicoController {
     public ResponseEntity save(@RequestBody ItemMagico personagem) {
         try {
             return ResponseEntity.ok(service.save(personagem));
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -51,7 +75,7 @@ public class ItemMagicoController {
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody ItemMagico personagem) {
         try {
             return ResponseEntity.ok(service.updateById(id, personagem));
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();
@@ -63,7 +87,7 @@ public class ItemMagicoController {
         try {
             service.deleteById(id);
             return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+        } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).build();

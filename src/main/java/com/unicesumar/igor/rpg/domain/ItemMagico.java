@@ -1,13 +1,18 @@
 package com.unicesumar.igor.rpg.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.unicesumar.igor.rpg.domain.enums.TipoItem;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemMagico {
 
     @Id
@@ -23,5 +28,7 @@ public class ItemMagico {
     @Builder.Default
     private Integer defesa = 0;
 
-
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Personagem personagem;
 }
