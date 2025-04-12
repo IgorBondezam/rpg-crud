@@ -39,7 +39,7 @@ public class PersonagemService {
         Personagem personagem = findById(id);
         ItemMagico itemMagico = itemMagicoService.findById(itemMagicoId);
         if(Objects.nonNull(itemMagico.getPersonagem())) {
-            throw new InvalidParameterException("O Item Mágico já está vinculádo em um personagem");
+            throw new InvalidParameterException("O Item Mágico já está vinculado em um personagem");
         }
         if(TipoItem.AMULETO.equals(itemMagico.getTipoItem()) &&
                 personagem.getItensMagicos().stream()
