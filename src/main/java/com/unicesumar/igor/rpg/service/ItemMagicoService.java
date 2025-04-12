@@ -28,6 +28,11 @@ public class ItemMagicoService {
         return repository.findItemMagicoByPersonagemId(personagemId);
     }
 
+    public ItemMagico findAmuletoByPersonagemId(Long personagemId) {
+        return findByPersonagemId(personagemId).stream().filter(i -> TipoItem.AMULETO.equals(i.getTipoItem()))
+                .findFirst().orElseThrow(() -> new InvalidParameterException("O Personagem não possui nenhum Amuleto"));
+    }
+
     public ItemMagico save(ItemMagico itemMagico) {
         if(TipoItem.ARMA.equals(itemMagico.getTipoItem())) {
             itemMagico.setDefesa(0);

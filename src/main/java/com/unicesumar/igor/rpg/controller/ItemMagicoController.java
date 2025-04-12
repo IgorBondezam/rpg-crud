@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.InvalidParameterException;
 
 @RestController
-@RequestMapping("personagem")
+@RequestMapping("item-magico")
 @AllArgsConstructor
 public class ItemMagicoController {
 
@@ -52,7 +52,7 @@ public class ItemMagicoController {
     @GetMapping("/amuleto/personagem/{idPersonagem}")
     public ResponseEntity findAmuteloByPersonagemId(@PathVariable("idPersonagem") Long idPersonagem) {
         try {
-            return ResponseEntity.ok(service.findByPersonagemId(idPersonagem));
+            return ResponseEntity.ok(service.findAmuletoByPersonagemId(idPersonagem));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -63,7 +63,7 @@ public class ItemMagicoController {
     @PostMapping()
     public ResponseEntity save(@RequestBody ItemMagico personagem) {
         try {
-            return ResponseEntity.ok(service.save(personagem));
+            return ResponseEntity.status(201).body(service.save(personagem));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class ItemMagicoController {
         }
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteById(@PathVariable("id") Long id) {
         try {
             service.deleteById(id);

@@ -28,7 +28,8 @@ public class ItemMagico {
     @Builder.Default
     private Integer defesa = 0;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "personagem_id")
     @JsonBackReference
     private Personagem personagem;
 }

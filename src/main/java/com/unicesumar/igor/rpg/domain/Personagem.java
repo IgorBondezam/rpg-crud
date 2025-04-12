@@ -1,5 +1,6 @@
 package com.unicesumar.igor.rpg.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.unicesumar.igor.rpg.domain.enums.Classe;
 import jakarta.persistence.*;
@@ -34,15 +35,27 @@ public class Personagem {
     private Integer defesa = 0;
 
     @Builder.Default
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personagem")
     @JsonManagedReference
     private List<ItemMagico> itensMagicos = new ArrayList<>();
 
+    @JsonIgnore
     public Integer getFullForca() {
         return forca + itensMagicos.stream().mapToInt(ItemMagico::getForca).sum();
     }
 
+    @JsonIgnore
     public Integer getFullDefesa() {
         return defesa + itensMagicos.stream().mapToInt(ItemMagico::getDefesa).sum();
+    }
+
+    public void adicionarItem(ItemMagico itemMagico) {
+        itemMagico.setPersonagem(this);
+        this.itensMagicos.add(itemMagico);
+    }
+
+    public void removeItem(ItemMagico itemMagico) {
+        itemMagico.setPersonagem(null);
+        this.itensMagicos.remove(itemMagico);
     }
 }

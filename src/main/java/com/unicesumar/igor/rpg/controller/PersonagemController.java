@@ -41,7 +41,7 @@ public class PersonagemController {
     @PostMapping()
     public ResponseEntity save(@RequestBody Personagem personagem) {
         try {
-            return ResponseEntity.ok(service.save(personagem));
+            return ResponseEntity.status(201).body(service.save(personagem));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {

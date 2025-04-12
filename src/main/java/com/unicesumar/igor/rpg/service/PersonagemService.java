@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -36,19 +37,25 @@ public class PersonagemService {
 
     public void adicionarItemMagico(Long id, Long itemMagicoId) {
         Personagem personagem = findById(id);
-        ItemMagico itemMagico = itemMagicoService.findById(id);
+        ItemMagico itemMagico = itemMagicoService.findById(itemMagicoId);
+        if(Objects.nonNull(itemMagico.getPersonagem())) {
+            throw new InvalidParameterException("O Item Mágico já está vinculádo em um personagem");
+        }
         if(TipoItem.AMULETO.equals(itemMagico.getTipoItem()) &&
                 personagem.getItensMagicos().stream()
                         .anyMatch(i -> TipoItem.AMULETO.equals(i.getTipoItem()))) {
             throw new InvalidParameterException("O personagem já possui um AMULETO cadastrado");
         }
-        personagem.getItensMagicos().add(itemMagico);
+        personagem.adicionarItem(itemMagico);
         save(personagem);
     }
 
     public void removerItemMagico(Long id, Long itemMagicoId) {
         Personagem personagem = findById(id);
-        personagem.getItensMagicos().removeIf(i -> i.getId().equals(itemMagicoId));
+        ItemMagico itemMagico = personagem.getItensMagicos().stream().filter(i -> itemMagicoId.equals(i.getId()))
+                .findFirst().orElseThrow(() ->  new InvalidParameterException("O personagem não possui o Item Mágico mencionado"));
+
+        personagem.removeItem(itemMagico);
         save(personagem);
     }
 
@@ -75,6 +82,8 @@ public class PersonagemService {
     }
 
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        Personagem personagem = findById(id);
+        personagem.getItensMagicos().forEach(i -> i.setPersonagem(null));
+        repository.delete(personagem);
     }
 }
