@@ -27,6 +27,4 @@ public class PersonagemDTO {
     private Integer forca = 0;
     @Builder.Default
     private Integer defesa = 0;
-    @Builder.Default
-    private List<ItemMagicoDTO> itemMagicoDTO = new ArrayList<>();
 }

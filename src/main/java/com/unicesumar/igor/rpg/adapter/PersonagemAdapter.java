@@ -15,6 +15,7 @@ public class PersonagemAdapter implements DtoAdapter<Personagem, PersonagemDTO> 
     @Override
     public Personagem toEntity(PersonagemDTO personagemDTO) {
         Personagem personagem = Personagem.builder()
+                .id(personagemDTO.getId())
                 .nome(personagemDTO.getNome())
                 .nomeAventureiro(personagemDTO.getNomeAventureiro())
                 .classe(personagemDTO.getClasse())
@@ -22,23 +23,19 @@ public class PersonagemAdapter implements DtoAdapter<Personagem, PersonagemDTO> 
                 .forca(personagemDTO.getForca())
                 .defesa(personagemDTO.getDefesa())
                 .build();
-        personagem.getItensMagicos().clear();
-        personagem.getItensMagicos().addAll(personagemDTO.getItemMagicoDTO()
-                .stream().map(itemMagicoAdapter::toEntity).toList());
         return personagem;
     }
 
     @Override
     public PersonagemDTO toDto(Personagem entity) {
         return PersonagemDTO.builder()
+                .id(entity.getId())
                 .nome(entity.getNome())
                 .nomeAventureiro(entity.getNomeAventureiro())
                 .classe(entity.getClasse())
                 .level(entity.getLevel())
                 .forca(entity.getFullForca())
                 .defesa(entity.getFullDefesa())
-                .itemMagicoDTO(entity.getItensMagicos()
-                        .stream().map(itemMagicoAdapter::toDto).toList())
                 .build();
     }
 }

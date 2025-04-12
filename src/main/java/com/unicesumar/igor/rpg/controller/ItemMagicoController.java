@@ -1,7 +1,8 @@
 package com.unicesumar.igor.rpg.controller;
 
 
-import com.unicesumar.igor.rpg.domain.ItemMagico;
+import com.unicesumar.igor.rpg.adapter.ItemMagicoAdapter;
+import com.unicesumar.igor.rpg.dto.ItemMagicoDTO;
 import com.unicesumar.igor.rpg.service.ItemMagicoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import java.security.InvalidParameterException;
 
 @RestController
-@RequestMapping("item-magico")
+@RequestMapping("/api/item-magico")
 @AllArgsConstructor
 public class ItemMagicoController {
 
     private final ItemMagicoService service;
+    private final ItemMagicoAdapter adapter;
 
     @GetMapping()
     public ResponseEntity findAll() {
         try {
-            return ResponseEntity.ok(service.findAll());
+            return ResponseEntity.ok(service.findAll().stream().map(adapter::toDto));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -30,7 +32,7 @@ public class ItemMagicoController {
     @GetMapping("/{id}")
     public ResponseEntity findById(@PathVariable("id") Long id) {
         try {
-            return ResponseEntity.ok(service.findById(id));
+            return ResponseEntity.ok(adapter.toDto(service.findById(id)));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -41,7 +43,7 @@ public class ItemMagicoController {
     @GetMapping("/personagem/{idPersonagem}")
     public ResponseEntity findByPersonagemId(@PathVariable("idPersonagem") Long idPersonagem) {
         try {
-            return ResponseEntity.ok(service.findByPersonagemId(idPersonagem));
+            return ResponseEntity.ok(service.findByPersonagemId(idPersonagem).stream().map(adapter::toDto));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -52,7 +54,7 @@ public class ItemMagicoController {
     @GetMapping("/amuleto/personagem/{idPersonagem}")
     public ResponseEntity findAmuteloByPersonagemId(@PathVariable("idPersonagem") Long idPersonagem) {
         try {
-            return ResponseEntity.ok(service.findAmuletoByPersonagemId(idPersonagem));
+            return ResponseEntity.ok(adapter.toDto(service.findAmuletoByPersonagemId(idPersonagem)));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -61,9 +63,9 @@ public class ItemMagicoController {
     }
 
     @PostMapping()
-    public ResponseEntity save(@RequestBody ItemMagico personagem) {
+    public ResponseEntity save(@RequestBody ItemMagicoDTO itemMagico) {
         try {
-            return ResponseEntity.status(201).body(service.save(personagem));
+            return ResponseEntity.status(201).body(adapter.toDto(service.save(adapter.toEntity(itemMagico))));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
@@ -72,9 +74,9 @@ public class ItemMagicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody ItemMagico personagem) {
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody ItemMagicoDTO itemMagico) {
         try {
-            return ResponseEntity.ok(service.updateById(id, personagem));
+            return ResponseEntity.ok(adapter.toDto(service.updateById(id, adapter.toEntity(itemMagico))));
         } catch (InvalidParameterException e) {
             return ResponseEntity.status(400).body(e.getMessage());
         } catch (Exception e) {
