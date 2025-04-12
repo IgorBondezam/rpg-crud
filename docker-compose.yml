@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  springboot-app:
+    depends_on:
+      - db
+    image: rpg
+    restart: always
+    build: .
+    ports:
+      - 8080:8080
+    environment:
+      POSTG_HOST: spring_rpg_postegres
+      POSTG_PORT: 5432
+      POSTG_USER: spring_rpg
+      POSTG_PASSWORD: 12345
+      PROFILE: default
+  db:
+    image: postgres
+    container_name: spring_rpg_postegres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: spring_rpg
+      POSTGRES_DB: spring_rpg
+      POSTGRES_PASSWORD: 12345
+
+volumes:
+    cache:
+      driver: local
+

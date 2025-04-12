@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:14-alpine3.20
+    container_name: spring_rpg_postegres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: spring_rpg
+      POSTGRES_DB: spring_rpg
+      POSTGRES_PASSWORD: 12345
+
+volumes:
+  cache:
+    driver: local
